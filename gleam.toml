@@ -19,7 +19,8 @@ gleam_json = "~> 1.0"
 glance = "~> 0.8"
 simplifile = "~> 1.2"
 tom = "~> 0.3"
-fswalk = "~> 1.0"
+fswalk = "~> 2.0"
+shellout = "~> 1.5"
 
 [dev-dependencies]
 gleeunit = "~> 1.0"

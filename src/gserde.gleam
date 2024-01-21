@@ -1,23 +1,30 @@
 import gleam/io
 import gleam/list
+import gleam/bool
 import gleam/string
 import gleam/result
 import glance
 import serializer
+import deserializer
 import simplifile
 import request.{type Request, Request}
-// import foo
-// import foo_json
 import fswalk
 
 pub fn gen(req: Request) {
-  let ser = case req.ser {
-    True -> Ok(serializer.from(req))
-    _ -> Error(Nil)
-  }
+  let ser =
+    bool.guard(when: req.ser, return: serializer.from(req), otherwise: fn() {
+      ""
+    })
+  let de =
+    bool.guard(when: req.de, return: deserializer.to(req), otherwise: fn() {
+      ""
+    })
 
-  let assert Ok(ser) = ser
-  #(req, ser)
+  #(
+    req,
+    [ser, de]
+    |> string.join("\n\n"),
+  )
 }
 
 fn to_output_filename(src_filename) {
@@ -37,13 +44,14 @@ fn expect(x, msg) {
 pub fn main() {
   fswalk.builder()
   |> fswalk.with_path("src")
-  |> fswalk.with_filter(fswalk.only_files)
+  |> fswalk.with_entry_filter(fswalk.only_files)
   |> fswalk.walk
   |> fswalk.map(fn(v) { expect(v, "failed to walk").filename })
   |> fswalk.each(process_single)
 }
 
 pub fn process_single(src_filename: String) {
+  io.debug(#(src_filename))
   // let assert Ok(gleam_toml_str) = simplifile.read(from: "gleam.toml")
   // let assert Ok(gleam_toml) = tom.parse(gleam_toml_str)
   // let assert Ok(pkg_name) = tom.get_string(gleam_toml, ["name"])
@@ -52,16 +60,15 @@ pub fn process_single(src_filename: String) {
     |> string.replace("src/", "")
     |> string.replace(".gleam", "")
   let dest_filename = to_output_filename(src_filename)
-  io.debug(#("reading", src_filename))
+
   let assert Ok(code) = simplifile.read(from: src_filename)
-  io.debug(#("parsing", src_filename))
+
   let assert Ok(parsed) =
     glance.module(code)
     |> result.map_error(fn(err) {
       io.debug(err)
       panic
     })
-  io.debug(#("next", src_filename))
 
   let custom_types =
     list.map(parsed.custom_types, fn(def) { def.definition })
@@ -75,7 +82,7 @@ pub fn process_single(src_filename: String) {
           type_name: custom_type.name,
           variant: variant,
           ser: True,
-          de: False,
+          de: True,
         )
       })
     })
@@ -92,6 +99,7 @@ pub fn process_single(src_filename: String) {
         to: dest_filename,
         contents: [
           "import gleam/json",
+          "import gleam/dynamic",
           "import " <> src_module_name,
           filecontent,
         ]

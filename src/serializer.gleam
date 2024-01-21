@@ -7,12 +7,13 @@ import gleam/option
 import gleam/io
 import gleam/int
 import request.{Request}
+import internal/path.{basename}
 
 fn glance_t_to_codegen_t(x: glance.Type) -> t.GleamType {
   case x {
     glance.NamedType(name, _module, parameters) -> {
-      // uhhhh how will we resolve types from modules
-      io.debug(#("glance_t_to_codegen_t", name))
+      // @todo resolve types from modules
+      // io.debug(#("glance_t_to_codegen_t", name))
       case name {
         "List" -> {
           let assert Ok(t0) = list.at(parameters, 0)
@@ -40,8 +41,8 @@ fn glance_t_to_codegen_t(x: glance.Type) -> t.GleamType {
       panic as "cannot serialize entities with functions"
     }
 
-    glance.VariableType(name) -> {
-      io.debug(name)
+    glance.VariableType(_name) -> {
+      // io.debug(name)
       panic as "unimplemented! VariableType"
     }
   }
@@ -65,14 +66,14 @@ pub fn get_json_serializer_str(ct: t.GleamType) {
       }
     }
     _ -> {
-      io.debug(#("codegen type failed: ", ct))
+      // io.debug(#("codegen type failed: ", ct))
       todo
     }
   }
 }
 
 fn codegen_t_to_codegen_json_t(ct, field_name) {
-  io.debug(#("codegen type: ", ct))
+  // io.debug(#("codegen type: ", ct))
   let json_call_fn_str = get_json_serializer_str(ct)
   let field_name_var = gens.VarPrimitive("t." <> field_name)
   case ct {
@@ -104,7 +105,7 @@ fn codegen_t_to_codegen_json_t(ct, field_name) {
       ])
     }
     _ -> {
-      io.debug(#("codegen_t_to_codegen_json_t failed: ", ct))
+      // io.debug(#("codegen_t_to_codegen_json_t failed: ", ct))
       todo
     }
   }
@@ -126,22 +127,21 @@ fn gen_to_json(req) {
   gens.Function(
     // string.lowercase(variant.name) <> "_to_json",
     "to_json",
-    [gens.arg_typed("t", t.AnonymousType(src_module_name <> "." <> type_name))],
+    [gens.arg_typed("t", t.AnonymousType(basename(src_module_name) <> "." <> type_name))],
     [
       gens.call("json.object", [
         gens.list(
           list.map(variant.fields, fn(field) {
             case option.to_result(field.label, Nil) {
               Ok(label) -> {
-                // @todo produce a tuple here not just the value
-                io.debug(#(field))
+                // io.debug(#(field))
                 gens.TupleVal([
                   gens.StringVal(label),
                   serializer_of_t(field.item, label),
                 ])
               }
               _ -> {
-                io.println(
+                io.println_error(
                   "Variant "
                     <> variant.name
                     <> " must have labels for all fields",
@@ -160,7 +160,7 @@ fn gen_to_string(req) {
   let Request(src_module_name: src_module_name, type_name: type_name, ..) = req
   gens.Function(
     "to_string",
-    [gens.arg_typed("t", t.AnonymousType(src_module_name <> "." <> type_name))],
+    [gens.arg_typed("t", t.AnonymousType(basename(src_module_name) <> "." <> type_name))],
     [gens.call("json.to_string", [gens.call("to_json", [gens.variable("t")])])],
   )
 }
