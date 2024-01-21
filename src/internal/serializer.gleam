@@ -127,7 +127,12 @@ fn gen_to_json(req) {
   gens.Function(
     // string.lowercase(variant.name) <> "_to_json",
     "to_json",
-    [gens.arg_typed("t", t.AnonymousType(basename(src_module_name) <> "." <> type_name))],
+    [
+      gens.arg_typed(
+        "t",
+        t.AnonymousType(basename(src_module_name) <> "." <> type_name),
+      ),
+    ],
     [
       gens.call("json.object", [
         gens.list(
@@ -160,7 +165,12 @@ fn gen_to_string(req) {
   let Request(src_module_name: src_module_name, type_name: type_name, ..) = req
   gens.Function(
     "to_string",
-    [gens.arg_typed("t", t.AnonymousType(basename(src_module_name) <> "." <> type_name))],
+    [
+      gens.arg_typed(
+        "t",
+        t.AnonymousType(basename(src_module_name) <> "." <> type_name),
+      ),
+    ],
     [gens.call("json.to_string", [gens.call("to_json", [gens.variable("t")])])],
   )
 }

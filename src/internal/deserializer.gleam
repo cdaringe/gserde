@@ -62,7 +62,7 @@ fn gen_root_decoder(req) {
       gens.call("json.decode", [
         gens.VarPrimitive("json_str"),
         gens.call("dynamic.decode" <> n_str, [
-          gens.VarPrimitive( basename(src_module_name) <> "." <> variant.name),
+          gens.VarPrimitive(basename(src_module_name) <> "." <> variant.name),
           ..list.map(req.variant.fields, fn(field) {
             gens.call("dynamic.field", [
               gens.VarPrimitive(

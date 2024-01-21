@@ -4,8 +4,8 @@ import gleam/bool
 import gleam/string
 import gleam/result
 import glance
-import serializer
-import deserializer
+import internal/serializer
+import internal/deserializer
 import simplifile
 import request.{type Request, Request}
 import fswalk
@@ -51,10 +51,6 @@ pub fn main() {
 }
 
 pub fn process_single(src_filename: String) {
-  io.debug(#(src_filename))
-  // let assert Ok(gleam_toml_str) = simplifile.read(from: "gleam.toml")
-  // let assert Ok(gleam_toml) = tom.parse(gleam_toml_str)
-  // let assert Ok(pkg_name) = tom.get_string(gleam_toml, ["name"])
   let src_module_name =
     src_filename
     |> string.replace("src/", "")

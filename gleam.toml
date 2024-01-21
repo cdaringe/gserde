@@ -1,5 +1,5 @@
 name = "gserde"
-version = "1.0.0"
+version = "1.0.1"
 
 # Fill out these fields if you intend to generate HTML documentation or publish
 # your project to the Hex package manager.
@@ -7,6 +7,10 @@ version = "1.0.0"
 description = "gleam codegen for serialization and deserialization"
 licences = ["MIT"]
 repository = { type = "github", user = "cdaringe", repo = "gserde" }
+internal_modules = [
+  "src/internal",
+  "src/internal/*",
+]
 # links = [{ title = "Website", href = "https://gleam.run" }]
 #
 # For a full reference of all the available options, you can have a look at
@@ -17,7 +21,6 @@ gleam_stdlib = "~> 0.34 or ~> 1.0"
 gleam_json = "~> 1.0"
 glance = "~> 0.8"
 simplifile = "~> 1.2"
-tom = "~> 0.3"
 fswalk = "~> 2.0"
 shellout = "~> 1.5"
 
