@@ -94,4 +94,7 @@ pub fn end_to_end_test() {
   |> should.equal(
     "{\"a_bool\":true,\"b_int\":1,\"c_float\":1.0,\"d_two_tuple\":[2,\"3\"],\"e_option_int\":4,\"f_string_list\":[\"a\",\"b\"]}",
   )
+
+  ["foo.gleam", "foo_json.gleam", "foo_json_test.gleam"]
+  |> list.each(fn(basename) { exec("rm", ["-f", "src/internal/" <> basename]) })
 }
