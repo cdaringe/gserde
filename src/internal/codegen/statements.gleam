@@ -52,7 +52,7 @@ pub opaque type Pattern {
 }
 
 pub opaque type Argument {
-  Argument(name: String, arg_type: GleamType)
+  Argument(name: String, arg_type: Option(GleamType))
 }
 
 pub fn nil() {
@@ -130,8 +130,12 @@ pub fn function(
   Function(name, arguments, statements)
 }
 
-pub fn arg(name: String, arg_type: GleamType) {
-  Argument(name, arg_type)
+pub fn arg_untyped(name: String) {
+  Argument(name, None)
+}
+
+pub fn arg_typed(name: String, arg_type: GleamType) {
+  Argument(name, Some(arg_type))
 }
 
 pub fn call(name: String, arguments: List(GleamStatement)) {
@@ -303,5 +307,9 @@ fn generate_pattern(pattern: Pattern) {
 }
 
 fn generate_arg(arg: Argument) {
-  arg.name <> ": " <> t.generate_type(arg.arg_type)
+  arg.name
+  <> case arg.arg_type {
+    Some(t) -> ": " <> t.generate_type(t)
+    _ -> ""
+  }
 }

@@ -18,6 +18,8 @@ gleam_stdlib = "~> 0.34 or ~> 1.0"
 gleam_json = "~> 1.0"
 glance = "~> 0.8"
 simplifile = "~> 1.2"
+tom = "~> 0.3"
+fswalk = "~> 1.0"
 
 [dev-dependencies]
 gleeunit = "~> 1.0"

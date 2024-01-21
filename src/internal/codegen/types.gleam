@@ -5,6 +5,7 @@ pub type GleamType {
   AnonymousType(String)
   NilType
   IntType
+  TupleType(elements: List(GleamType))
   ListType(list_type: GleamType)
   VariantType(name: String, variants: List(Variant))
   VariantDepType(
@@ -43,6 +44,13 @@ pub fn field(name: String, field_type: GleamType) -> Field {
   Field(name, field_type)
 }
 
+pub fn option(some_type: GleamType) -> GleamType {
+  VariantDepType("Option", [some_type], [
+    variant("Some", [field("some", some_type)]),
+    variant("Error", []),
+  ])
+}
+
 pub fn result(ok_type: GleamType, error_type: GleamType) -> GleamType {
   VariantDepType("Result", [ok_type, error_type], [
     variant("Ok", [field("ok", ok_type)]),
@@ -64,6 +72,11 @@ pub fn generate_type_def(gleam_type: GleamType) -> String {
     NilType -> ""
     IntType -> ""
     ListType(list_type) -> "List(" <> generate_type_def(list_type) <> ")"
+    TupleType(elements) ->
+      "#("
+      <> list.map(elements, generate_type_def)
+      |> join(", ")
+      <> ")"
     VariantDepType(name, dep_types, variants) ->
       "pub type "
       <> name
@@ -121,6 +134,7 @@ pub fn generate_type(arg_type: GleamType) {
       |> map(generate_type)
       |> join(", ")
       <> ")"
+    TupleType(els) -> generate_type_def(TupleType(els))
     VariantType(name, _variants) -> name
     FunctionType(args, result) ->
       "fn("
