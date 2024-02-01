@@ -19,7 +19,7 @@ gleam add gserde
 ```gleam
 // src/foo.gleam
 import gleam/option.{type Option}
-pub type FooJSON {
+pub type FooJson {
   Foo(
     a_bool: Bool,
     b_int: Int,
