@@ -12,14 +12,15 @@ gleam add gserde
 
 ## usage
 
-1. Create custom type with a singular variant constructor:
-2. Run `gleam run -m gserde`
-3. Observe `src/foo_json.gleam`, which has the goodies you need for json (de)serialization.
+1. Create custom type with a singular variant constructor. See the example `src/foo.gleam` below.
+2. Run `gleam run -m gserde`.
+3. Observe the generated file `src/foo_json.gleam`.
+4. Use it!
 
 ```gleam
 // src/foo.gleam
 import gleam/option.{type Option}
-pub type FooJSON {
+pub type FooJson {
   Foo(
     a_bool: Bool,
     b_int: Int,

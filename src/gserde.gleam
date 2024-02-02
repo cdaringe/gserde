@@ -68,7 +68,7 @@ pub fn process_single(src_filename: String) {
 
   let custom_types =
     list.map(parsed.custom_types, fn(def) { def.definition })
-    |> list.filter(fn(x) { string.ends_with(x.name, "JSON") })
+    |> list.filter(fn(x) { string.ends_with(x.name, "Json") })
   let requests =
     custom_types
     |> list.flat_map(fn(custom_type) {
