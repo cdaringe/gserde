@@ -10,7 +10,7 @@ pub fn main() {
 }
 
 const foo_module = "import gleam/option.{type Option}
-pub type FooJSON {
+pub type FooJson {
   Foo(
     a_bool: Bool,
     b_int: Int,
