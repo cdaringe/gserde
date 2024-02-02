@@ -31,6 +31,48 @@ pub type FooJson {
   )
 }
 
+// src/foo_json.gleam
+// generated!
+import gleam/json
+import gleam/dynamic
+import internal/foo
+
+pub fn to_json(t: foo.FooJson) {
+  json.object([
+    #("a_bool", json.bool(t.a_bool)),
+    #("b_int", json.int(t.b_int)),
+    #("c_float", json.float(t.c_float)),
+    #(
+      "d_two_tuple",
+      json.preprocessed_array([
+        json.int(t.d_two_tuple.0),
+        json.string(t.d_two_tuple.1),
+      ]),
+    ),
+    #("e_option_int", json.nullable(t.e_option_int, json.int)),
+    #("f_string_list", json.array(t.f_string_list, json.string)),
+  ])
+}
+
+pub fn to_string(t: foo.FooJson) {
+  json.to_string(to_json(t))
+}
+
+pub fn from_json(json_str: String) {
+  json.decode(
+    json_str,
+    dynamic.decode6(
+      foo.Foo,
+      dynamic.field("a_bool", dynamic.bool),
+      dynamic.field("b_int", dynamic.int),
+      dynamic.field("c_float", dynamic.float),
+      dynamic.field("d_two_tuple", dynamic.tuple2(dynamic.int, dynamic.string)),
+      dynamic.field("e_option_int", dynamic.optional(dynamic.int)),
+      dynamic.field("f_string_list", dynamic.list(dynamic.string)),
+    ),
+  )
+}
+
 // src/my_module.gleam
 import foo
 import foo_json
