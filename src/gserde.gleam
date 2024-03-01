@@ -5,6 +5,7 @@ import gleam/string
 import gleam/result
 import glance
 import internal/serializer
+import dot_env/env
 import internal/deserializer
 import simplifile
 import request.{type Request, Request}
@@ -42,15 +43,27 @@ fn expect(x, msg) {
 }
 
 pub fn main() {
+  let is_debug = case env.get_bool("DEBUG") {
+    Ok(_) -> True
+    _ -> False
+  }
   fswalk.builder()
   |> fswalk.with_path("src")
   |> fswalk.with_entry_filter(fswalk.only_files)
   |> fswalk.walk
   |> fswalk.map(fn(v) { expect(v, "failed to walk").filename })
-  |> fswalk.each(process_single)
+  |> fswalk.each(fn(f) { process_single(f, is_debug) })
 }
 
-pub fn process_single(src_filename: String) {
+pub fn process_single(src_filename: String, is_debug) {
+  case is_debug {
+    True -> {
+      io.debug(#("Processing", src_filename))
+      Nil
+    }
+    _ -> Nil
+  }
+
   let src_module_name =
     src_filename
     |> string.replace("src/", "")

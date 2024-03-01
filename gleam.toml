@@ -1,5 +1,5 @@
 name = "gserde"
-version = "1.0.4"
+version = "1.1.0"
 
 # Fill out these fields if you intend to generate HTML documentation or publish
 # your project to the Hex package manager.
@@ -22,6 +22,7 @@ glance = "~> 0.8"
 simplifile = "~> 1.2"
 fswalk = "~> 2.0"
 shellout = "~> 1.5"
+dot_env = "~> 0.2"
 
 [dev-dependencies]
 gleeunit = "~> 1.0"

@@ -88,6 +88,8 @@ pub fn serialization_identity_test() {
 }
 ```
 
+You can set `DEBUG=1` to get verbose output during codegen.
+
 ## todo
 
 - [ ] complete all cases
