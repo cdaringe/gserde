@@ -3,3 +3,4 @@
 /build
 erl_crash.dump
 src/internal/foo**
+src/internal/bar**

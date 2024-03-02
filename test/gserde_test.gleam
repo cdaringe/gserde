@@ -9,7 +9,9 @@ pub fn main() {
   gleeunit.main()
 }
 
-const foo_module = "import gleam/option.{type Option}
+const foo_module = "
+import gleam/option.{type Option, Some}
+
 pub type FooJson {
   Foo(
     a_bool: Bool,
@@ -18,6 +20,27 @@ pub type FooJson {
     d_two_tuple: #(Int, String),
     e_option_int: Option(Int),
     f_string_list: List(String),
+  )
+}
+
+pub fn fixture_foo() {
+  Foo(
+    a_bool: True,
+    b_int: 1,
+    c_float: 1.0,
+    d_two_tuple: #(2, \"3\"),
+    e_option_int: Some(4),
+    f_string_list: [\"a\", \"b\"]
+  )
+}
+"
+
+const bar_module = "
+import internal/foo
+
+pub type BarJson {
+  Bar(
+    foo: foo.FooJson
   )
 }
 "
@@ -30,20 +53,13 @@ import internal/foo
 import internal/foo_json
 
 pub fn main() {
-  let foo_a = foo.Foo(
-    a_bool: True,
-    b_int: 1,
-    c_float: 1.0,
-    d_two_tuple: #(2, \"3\"),
-    e_option_int: Some(4),
-    f_string_list: [\"a\", \"b\"]
-  )
+  let foo_a = foo.fixture_foo()
 
   let foo_str = foo_a
     |> foo_json.to_string
 
-  let foo_b = foo_str |> foo_json.from_json |> result.lazy_unwrap(fn() {
-    io.debug(\"parse error calling foo_json.from_json\")
+  let foo_b = foo_str |> foo_json.from_string |> result.lazy_unwrap(fn() {
+    io.debug(\"parse error calling foo_json.from_string\")
     panic
   })
 
@@ -57,6 +73,40 @@ pub fn main() {
   }
 
   io.print(foo_str)
+}
+"
+
+const bar_json_test = "
+import gleam/option
+import gleam/io
+import gleam/result
+import internal/foo
+import internal/bar
+import internal/bar_json
+
+pub fn main() {
+  let bar_a = bar.Bar(
+    foo: foo.fixture_foo()
+  )
+
+  let bar_str = bar_a
+    |> bar_json.to_string
+
+  let bar_b = bar_str |> bar_json.from_string |> result.lazy_unwrap(fn() {
+    io.debug(\"parse error calling bar_json.from_string\")
+    panic
+  })
+
+  case bar_a == bar_b {
+    True -> io.println(\"bars equal\")
+    False -> {
+      io.debug(#(\"a\", bar_a))
+      io.debug(#(\"b\", bar_b))
+      panic as \"not equal\"
+    }
+  }
+
+  io.print(bar_str)
 }
 "
 
@@ -76,6 +126,9 @@ pub fn end_to_end_test() {
   let assert Ok(_) =
     simplifile.write(to: "src/internal/foo.gleam", contents: foo_module)
 
+  let assert Ok(_) =
+    simplifile.write(to: "src/internal/bar.gleam", contents: bar_module)
+
   // run our gen cli
   exec("gleam", ["run"])
 
@@ -85,15 +138,20 @@ pub fn end_to_end_test() {
       to: "src/internal/foo_json_test.gleam",
       contents: foo_json_test,
     )
-  let assert Ok(last_output_line) =
+
+  let assert Ok(_) =
+    simplifile.write(
+      to: "src/internal/bar_json_test.gleam",
+      contents: bar_json_test,
+    )
+
+  let assert Ok(last_foooutput_line) =
     exec("gleam", ["run", "-m=internal/foo_json_test"])
     |> string.split("\n")
     |> list.last
 
-  last_output_line
+  last_foooutput_line
   |> should.equal(
     "{\"a_bool\":true,\"b_int\":1,\"c_float\":1.0,\"d_two_tuple\":[2,\"3\"],\"e_option_int\":4,\"f_string_list\":[\"a\",\"b\"]}",
   )
-  ["foo.gleam", "foo_json.gleam", "foo_json_test.gleam"]
-  |> list.each(fn(basename) { exec("rm", ["-f", "src/internal/" <> basename]) })
 }

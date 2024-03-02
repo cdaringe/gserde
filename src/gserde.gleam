@@ -10,6 +10,7 @@ import internal/deserializer
 import simplifile
 import request.{type Request, Request}
 import fswalk
+import evil.{expect}
 
 pub fn gen(req: Request) {
   let ser =
@@ -32,16 +33,6 @@ fn to_output_filename(src_filename) {
   string.replace(in: src_filename, each: ".gleam", with: "_json.gleam")
 }
 
-fn expect(x, msg) {
-  case x {
-    Ok(v) -> v
-    Error(_) -> {
-      io.print_error(msg)
-      panic
-    }
-  }
-}
-
 pub fn main() {
   let is_debug = case env.get_bool("DEBUG") {
     Ok(_) -> True
@@ -56,18 +47,16 @@ pub fn main() {
 }
 
 pub fn process_single(src_filename: String, is_debug) {
-  case is_debug {
-    True -> {
-      io.debug(#("Processing", src_filename))
-      Nil
-    }
-    _ -> Nil
-  }
+  bool.guard(!is_debug, Nil, fn() {
+    io.debug(#("Processing", src_filename))
+    Nil
+  })
 
   let src_module_name =
     src_filename
     |> string.replace("src/", "")
     |> string.replace(".gleam", "")
+
   let dest_filename = to_output_filename(src_filename)
 
   let assert Ok(code) = simplifile.read(from: src_filename)
@@ -82,6 +71,13 @@ pub fn process_single(src_filename: String, is_debug) {
   let custom_types =
     list.map(parsed.custom_types, fn(def) { def.definition })
     |> list.filter(fn(x) { string.ends_with(x.name, "Json") })
+
+  bool.guard(
+    when: list.length(of: custom_types) <= 1,
+    return: Nil,
+    otherwise: fn() { panic as "Only one json type is allowed per file" },
+  )
+
   let requests =
     custom_types
     |> list.flat_map(fn(custom_type) {
@@ -89,6 +85,7 @@ pub fn process_single(src_filename: String, is_debug) {
         Request(
           src_module_name: src_module_name,
           type_name: custom_type.name,
+          module: parsed,
           variant: variant,
           ser: True,
           de: True,
@@ -116,7 +113,4 @@ pub fn process_single(src_filename: String, is_debug) {
       )
       |> result.unwrap(Nil)
   }
-  // foo.Foo(a: True, b: #(123))
-  // |> foo_json.to_string
-  // |> io.println
 }
