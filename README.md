@@ -1,7 +1,7 @@
 # gserde
 
-**warning**: alpha package with poor code hygiene, including assert/panic/todo
-statements. Use understanding that this package is not ready for primetime.
+**warning**: alpha quality package with poor code hygiene, including assert/panic/todo
+statements.
 
 [![Package Version](https://img.shields.io/hexpm/v/gserde)](https://hex.pm/packages/gserde)
 [![Hex Docs](https://img.shields.io/badge/hex-docs-ffaff3)](https://hexdocs.pm/gserde/)
