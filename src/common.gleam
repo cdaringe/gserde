@@ -1,5 +1,5 @@
-import justin
 import gleam/string
+import justin
 
 pub fn decoder_name_of_t(raw_name: String) -> String {
   let snake_name = justin.snake_case(raw_name)

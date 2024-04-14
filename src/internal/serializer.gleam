@@ -1,15 +1,15 @@
+import ast.{get_import_path_from_mod_name}
 import evil.{expect}
 import glance
-import internal/codegen/statements as gens
-import internal/codegen/modules as genm
-import internal/codegen/types as t
-import gleam/string
+import gleam/int
 import gleam/list
 import gleam/option.{None, Some}
-import gleam/int
-import ast.{get_import_path_from_mod_name}
-import request.{Request}
+import gleam/string
+import internal/codegen/modules as genm
+import internal/codegen/statements as gens
+import internal/codegen/types as t
 import internal/path.{basename}
+import request.{Request}
 
 type StmtGenReq {
   Stmt(t: t.GleamType, module_path: String, imports: List(String))

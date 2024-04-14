@@ -1,6 +1,6 @@
 import gleam/int.{to_string as to_s}
-import gleam/option.{type Option, None, Some}
 import gleam/list.{map}
+import gleam/option.{type Option, None, Some}
 import gleam/string.{join}
 import internal/codegen/types.{type GleamType} as t
 

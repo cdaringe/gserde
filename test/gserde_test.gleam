@@ -1,9 +1,9 @@
+import gleam/list
+import gleam/string
 import gleeunit
 import gleeunit/should
-import simplifile
-import gleam/string
-import gleam/list
 import shellout
+import simplifile
 
 pub fn main() {
   gleeunit.main()

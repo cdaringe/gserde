@@ -1,15 +1,15 @@
+import common.{decoder_name_of_t}
+import evil.{expect}
 import glance
-import internal/codegen/statements as gens
-import internal/codegen/types as t
-import gleam/string
+import gleam/int
+import gleam/io
 import gleam/list
 import gleam/option
-import gleam/io
-import gleam/int
-import request.{type Request, Request}
-import common.{decoder_name_of_t}
+import gleam/string
+import internal/codegen/statements as gens
+import internal/codegen/types as t
 import internal/path.{basename}
-import evil.{expect}
+import request.{type Request, Request}
 
 fn quote(str) {
   "\"" <> str <> "\""

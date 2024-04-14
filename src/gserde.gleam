@@ -1,16 +1,16 @@
+import dot_env/env
+import evil.{expect}
+import fswalk
+import glance
+import gleam/bool
 import gleam/io
 import gleam/list
-import gleam/bool
-import gleam/string
 import gleam/result
-import glance
-import internal/serializer
-import dot_env/env
+import gleam/string
 import internal/deserializer
-import simplifile
+import internal/serializer
 import request.{type Request, Request}
-import fswalk
-import evil.{expect}
+import simplifile
 
 pub fn gen(req: Request) {
   let ser =
@@ -106,11 +106,11 @@ pub fn process_single(src_filename: String, is_debug) {
       simplifile.write(
         to: dest_filename,
         contents: [
-            "import gleam/json",
-            "import gleam/dynamic",
-            "import " <> src_module_name,
-            filecontent,
-          ]
+          "import gleam/json",
+          "import gleam/dynamic",
+          "import " <> src_module_name,
+          filecontent,
+        ]
           |> string.join("\n"),
       )
       |> result.unwrap(Nil)

@@ -1,8 +1,8 @@
 import gleam/list
-import gleam/string
 import gleam/set
-import internal/codegen/types.{type GleamType} as t
+import gleam/string
 import internal/codegen/statements.{type GleamStatement} as gens
+import internal/codegen/types.{type GleamType} as t
 
 pub type Mod {
   Mod(
