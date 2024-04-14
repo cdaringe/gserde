@@ -26,20 +26,17 @@ fn request_stmt(t: t.GleamType, mq, imps) {
 fn glance_t_to_codegen_t(x: glance.Type, req: request.Request) -> StmtGenReq {
   case x {
     glance.NamedType(name, module, parameters) -> {
-      // @todo resolve types from modules
       case name {
         "List" -> {
           let assert Ok(t0) = list.at(parameters, 0)
           request_basic_stmt(t.ListType(glance_t_to_codegen_t(t0, req).t))
         }
         "Option" -> {
-          // @todo options are untagged, and just `null | T`
           // https://serde.rs/enum-representations.html
           let assert Ok(t0) = list.at(parameters, 0)
           request_basic_stmt(t.option(glance_t_to_codegen_t(t0, req).t))
         }
         "Result" -> {
-          // @todo options are untagged, and just `null | T`
           // https://serde.rs/enum-representations.html
           panic as "Result is unimplemented! serde-style tagging support needed https://serde.rs/enum-representations.html"
         }
@@ -97,7 +94,7 @@ pub fn get_json_serializer_str(ct: t.GleamType) {
       }
     }
     _ -> {
-      todo
+      panic as "unimplemented! get_json_serializer_str"
     }
   }
 }
