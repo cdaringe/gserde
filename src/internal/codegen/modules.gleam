@@ -32,8 +32,8 @@ pub fn merge(m1: Mod, m2: Mod) {
     functions: list.concat([m1.functions, m2.functions]),
     types: list.concat([m1.types, m2.types]),
     imports: list.concat([m1.imports, m2.imports])
-    |> set.from_list
-    |> set.to_list,
+      |> set.from_list
+      |> set.to_list,
   )
 }
 

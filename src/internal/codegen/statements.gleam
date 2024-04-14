@@ -142,7 +142,7 @@ pub fn call(name: String, arguments: List(GleamStatement)) {
   FunctionCall(
     name,
     arguments
-    |> map(UseArg),
+      |> map(UseArg),
   )
 }
 

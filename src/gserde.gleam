@@ -25,7 +25,7 @@ pub fn gen(req: Request) {
   #(
     req,
     [ser, de]
-    |> string.join("\n\n"),
+      |> string.join("\n\n"),
   )
 }
 
@@ -40,7 +40,9 @@ pub fn main() {
   }
   fswalk.builder()
   |> fswalk.with_path("src")
-  |> fswalk.with_entry_filter(fswalk.only_files)
+  |> fswalk.with_entry_filter(fn(it) {
+    string.ends_with(it.filename, ".gleam") && fswalk.only_files(it)
+  })
   |> fswalk.walk
   |> fswalk.map(fn(v) { expect(v, "failed to walk").filename })
   |> fswalk.each(fn(f) { process_single(f, is_debug) })
@@ -104,12 +106,12 @@ pub fn process_single(src_filename: String, is_debug) {
       simplifile.write(
         to: dest_filename,
         contents: [
-          "import gleam/json",
-          "import gleam/dynamic",
-          "import " <> src_module_name,
-          filecontent,
-        ]
-        |> string.join("\n"),
+            "import gleam/json",
+            "import gleam/dynamic",
+            "import " <> src_module_name,
+            filecontent,
+          ]
+          |> string.join("\n"),
       )
       |> result.unwrap(Nil)
   }

@@ -48,7 +48,7 @@ fn gen_decoder(typ, req: Request) {
       gens.call(
         "dynamic.tuple" <> string.lowercase(m_tuple),
         parts
-        |> list.map(fn(part) { gen_decoder(part, req) }),
+          |> list.map(fn(part) { gen_decoder(part, req) }),
       )
     }
     x -> {
