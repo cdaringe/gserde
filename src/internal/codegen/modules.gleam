@@ -1,4 +1,3 @@
-import gleam/option
 import gleam/list
 import gleam/string
 import gleam/set

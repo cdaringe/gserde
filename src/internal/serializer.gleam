@@ -137,7 +137,7 @@ fn codegen_t_to_codegen_json_t(gen: StmtGenReq, field_name) {
       ])
     }
     _ -> {
-      todo
+      panic as "unimplemented! codegen_t_to_codegen_json_t"
     }
   }
 }
