@@ -17,7 +17,7 @@ internal_modules = [
 # https://gleam.run/writing-gleam/gleam-toml/.
 
 [dependencies]
-gleam_stdlib = "~> 0.34 or ~> 1.0"
+gleam_stdlib = "~> and 0.34 or ~> 1.0 or ^0.39.0"
 glance = "~> 0.8"
 simplifile = "~> 1.2"
 fswalk = "~> 2.0"
