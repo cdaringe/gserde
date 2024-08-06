@@ -22,7 +22,7 @@ glance = "~> 0.8"
 simplifile = "~> 1.2"
 fswalk = "~> 2.0"
 shellout = "~> 1.5"
-dot_env = "~> 0.2"
+dot_env = "~> 0.2 or ^1.0.0"
 justin = "~> 1.0"
 
 [dev-dependencies]
