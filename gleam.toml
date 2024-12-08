@@ -1,5 +1,5 @@
 name = "gserde"
-version = "1.2.2"
+version = "1.2.3"
 
 # Fill out these fields if you intend to generate HTML documentation or publish
 # your project to the Hex package manager.
@@ -17,12 +17,12 @@ internal_modules = [
 # https://gleam.run/writing-gleam/gleam-toml/.
 
 [dependencies]
-gleam_stdlib = "~> 0.34 or ~> 1.0"
-glance = "~> 0.8"
-fswalk = "~> 2.0"
-dot_env = "~> 0.2"
-justin = "~> 1.0"
-simplifile = ">= 1.7.0 and < 2.0.0"
+gleam_stdlib = ">= 0.34.0 and < 2.0.0"
+simplifile = ">= 2.2.0 and < 3.0.0"
+glance = "~> 1.1.0"
+dot_env = "~> 1.2"
+justin = "~> 1.0.1"
+fswalk = ">= 3.0.2 and < 4.0.0"
 
 [dev-dependencies]
 shellout = "~> 1.5"

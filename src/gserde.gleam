@@ -4,6 +4,7 @@ import fswalk
 import glance
 import gleam/bool
 import gleam/io
+import gleam/iterator
 import gleam/list
 import gleam/result
 import gleam/string
@@ -40,12 +41,13 @@ pub fn main() {
   }
   fswalk.builder()
   |> fswalk.with_path("src")
-  |> fswalk.with_entry_filter(fn(it) {
-    string.ends_with(it.filename, ".gleam") && fswalk.only_files(it)
-  })
   |> fswalk.walk
-  |> fswalk.map(fn(v) { expect(v, "failed to walk").filename })
-  |> fswalk.each(fn(f) { process_single(f, is_debug) })
+  |> iterator.filter(fn(entry) {
+    let assert Ok(entry) = entry
+    !entry.stat.is_directory && string.ends_with(entry.filename, ".gleam")
+  })
+  |> iterator.map(fn(v) { expect(v, "failed to walk").filename })
+  |> iterator.each(fn(f) { process_single(f, is_debug) })
 }
 
 pub fn process_single(src_filename: String, is_debug) {
