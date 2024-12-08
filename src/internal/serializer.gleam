@@ -1,5 +1,5 @@
 import ast.{get_import_path_from_mod_name}
-import evil.{expect}
+import evil.{at, expect}
 import glance
 import gleam/int
 import gleam/list
@@ -28,12 +28,12 @@ fn glance_t_to_codegen_t(x: glance.Type, req: request.Request) -> StmtGenReq {
     glance.NamedType(name, module, parameters) -> {
       case name {
         "List" -> {
-          let assert Ok(t0) = list.at(parameters, 0)
+          let assert Ok(t0) = at(parameters, 0)
           request_basic_stmt(t.ListType(glance_t_to_codegen_t(t0, req).t))
         }
         "Option" -> {
           // https://serde.rs/enum-representations.html
-          let assert Ok(t0) = list.at(parameters, 0)
+          let assert Ok(t0) = at(parameters, 0)
           request_basic_stmt(t.option(glance_t_to_codegen_t(t0, req).t))
         }
         "Result" -> {
@@ -72,6 +72,9 @@ fn glance_t_to_codegen_t(x: glance.Type, req: request.Request) -> StmtGenReq {
 
     glance.VariableType(_name) -> {
       panic as "unimplemented! VariableType"
+    }
+    glance.HoleType(_) -> {
+      panic as "unimplemented! HoleType"
     }
   }
 }

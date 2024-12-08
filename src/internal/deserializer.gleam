@@ -1,5 +1,5 @@
 import common.{decoder_name_of_t}
-import evil.{expect}
+import evil.{at, expect}
 import glance
 import gleam/int
 import gleam/io
@@ -20,11 +20,11 @@ fn gen_decoder(typ, req: Request) {
     glance.NamedType(name, module_name, parameters) -> {
       case name {
         "List" -> {
-          let assert Ok(t0) = list.at(parameters, 0)
+          let assert Ok(t0) = at(parameters, 0)
           gens.call("dynamic.list", [gen_decoder(t0, req)])
         }
         "Option" -> {
-          let assert Ok(t0) = list.at(parameters, 0)
+          let assert Ok(t0) = at(parameters, 0)
           gens.call("dynamic.optional", [gen_decoder(t0, req)])
         }
         _ -> {
