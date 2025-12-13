@@ -2,6 +2,7 @@ import dot_env/env
 import fswalk
 import glance
 import gleam/bool
+import gleam/io
 import gleam/list
 import gleam/result
 import gleam/string
@@ -68,7 +69,7 @@ pub fn process_single(src_filename: String, is_debug) {
   let assert Ok(parsed) =
     glance.module(code)
     |> result.map_error(fn(err) {
-      echo err
+      io.print_error(string.inspect(err))
       panic
     })
 
@@ -96,7 +97,6 @@ pub fn process_single(src_filename: String, is_debug) {
         )
       })
     })
-  echo custom_types
   let filecontent =
     list.map(requests, gen)
     |> list.map(fn(it) { it.1 })

@@ -4,7 +4,7 @@
 packages = [
   { name = "dot_env", version = "1.2.0", build_tools = ["gleam"], requirements = ["gleam_stdlib", "simplifile"], otp_app = "dot_env", source = "hex", outer_checksum = "F2B4815F1B5AF8F20A6EADBB393E715C4C35203EBD5BE8200F766EA83A0B18DE" },
   { name = "filepath", version = "1.1.2", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "filepath", source = "hex", outer_checksum = "B06A9AF0BF10E51401D64B98E4B627F1D2E48C154967DA7AF4D0914780A6D40A" },
-  { name = "fswalk", version = "3.0.3", build_tools = ["gleam"], requirements = ["gleam_community_path", "gleam_stdlib", "gleam_yielder", "simplifile"], otp_app = "fswalk", source = "hex", outer_checksum = "2F0859F297348EAEA080925931B27CD84C0D6D18809D38AE18BE10A3D6512657" },
+  { name = "fswalk", version = "3.1.0", build_tools = ["gleam"], requirements = ["gleam_community_path", "gleam_stdlib", "gleam_yielder", "simplifile"], otp_app = "fswalk", source = "hex", outer_checksum = "579530173EE64EDDF53CE02D21171E4CC0CB4F1D34DAA829D32B6009CD8E6FD5" },
   { name = "glance", version = "6.0.0", build_tools = ["gleam"], requirements = ["gleam_stdlib", "glexer"], otp_app = "glance", source = "hex", outer_checksum = "49E0ED4793BB3F56C3E5ED00528D70CAE21D263F70A735604124B95C5F62E2DB" },
   { name = "gleam_community_path", version = "0.1.0", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "gleam_community_path", source = "hex", outer_checksum = "916C2829E2ED81036BBA180CFD5E8633D05E25C304FDF6E3BC8A048459B89725" },
   { name = "gleam_json", version = "3.1.0", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "gleam_json", source = "hex", outer_checksum = "44FDAA8847BE8FC48CA7A1C089706BD54BADCC4C45B237A992EDDF9F2CDB2836" },
@@ -20,12 +20,12 @@ packages = [
 
 [requirements]
 dot_env = { version = ">= 1.2.0 and < 2.0.0" }
-fswalk = { version = ">= 3.0.3 and < 4.0.0" }
+fswalk = { version = ">= 3.1.0 and < 4.0.0" }
 glance = { version = ">= 6.0.0" }
 gleam_json = { version = ">= 3.1.0 and < 4.0.0" }
 gleam_stdlib = { version = "~> 0.34 or ~> 1.0" }
+gleam_yielder = { version = ">= 1.1.0 and < 2.0.0" }
 gleeunit = { version = "~> 1.0" }
 justin = { version = "~> 1.0" }
 shellout = { version = "~> 1.5" }
 simplifile = { version = ">= 2.3.1 and < 3.0.0" }
-gleam_yielder = { version = ">= 1.1.0 and < 2.0.0" }

@@ -17,7 +17,7 @@ internal_modules = ["internal", "internal/*"]
 gleam_stdlib = "~> 0.34 or ~> 1.0"
 glance = ">= 6.0.0"
 simplifile = ">= 2.3.1 and < 3.0.0"
-fswalk = ">= 3.0.3 and < 4.0.0"
+fswalk = ">= 3.1.0 and < 4.0.0"
 shellout = "~> 1.5"
 dot_env = ">= 1.2.0 and < 2.0.0"
 justin = "~> 1.0"
