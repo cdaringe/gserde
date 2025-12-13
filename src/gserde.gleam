@@ -7,9 +7,9 @@ import gleam/list
 import gleam/result
 import gleam/string
 import gleam/yielder
+import gserde/request.{type Request, Request}
 import internal/deserializer
 import internal/serializer
-import request.{type Request, Request}
 import simplifile
 
 pub fn gen(req: Request) {

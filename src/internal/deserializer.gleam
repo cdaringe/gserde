@@ -1,14 +1,14 @@
-import common.{decoder_name_of_t}
 import glance
 import gleam/int
 import gleam/io
 import gleam/list
 import gleam/option
 import gleam/string
+import gserde/common.{decoder_name_of_t}
+import gserde/request.{type Request, Request}
 import internal/codegen/statements as gens
 import internal/codegen/types as t
 import internal/path.{basename}
-import request.{type Request, Request}
 
 fn quote(str) {
   "\"" <> str <> "\""
