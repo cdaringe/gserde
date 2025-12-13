@@ -53,7 +53,7 @@ pub fn main() {
 
 pub fn process_single(src_filename: String, is_debug) {
   bool.guard(!is_debug, Nil, fn() {
-    echo #("Processing", src_filename)
+    io.println("Processing: " <> src_filename)
     Nil
   })
 

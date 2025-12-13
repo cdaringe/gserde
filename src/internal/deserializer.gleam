@@ -1,6 +1,7 @@
 import common.{decoder_name_of_t}
 import glance
 import gleam/int
+import gleam/io
 import gleam/list
 import gleam/option
 import gleam/string
@@ -64,7 +65,7 @@ fn gen_decoder(typ) {
       )
     }
     x -> {
-      echo #("warning: unsupported decoding", x)
+      io.println_error(string.inspect(#("warning: unsupported decoding", x)))
       gens.Direct("todo")
     }
   }
