@@ -18,26 +18,26 @@ pub fn empty() -> Mod {
 }
 
 pub fn add_functions(mod: Mod, functions: List(GleamStatement)) -> Mod {
-  Mod(..mod, functions: list.concat([mod.functions, functions]))
+  Mod(..mod, functions: list.flatten([mod.functions, functions]))
 }
 
 pub fn add_imports(mod: Mod, imports: List(String)) -> Mod {
-  Mod(..mod, imports: list.concat([mod.imports, imports]))
+  Mod(..mod, imports: list.flatten([mod.imports, imports]))
 }
 
 pub fn merge(m1: Mod, m2: Mod) {
   Mod(
     name: m1.name,
-    functions: list.concat([m1.functions, m2.functions]),
-    types: list.concat([m1.types, m2.types]),
-    imports: list.concat([m1.imports, m2.imports])
+    functions: list.flatten([m1.functions, m2.functions]),
+    types: list.flatten([m1.types, m2.types]),
+    imports: list.flatten([m1.imports, m2.imports])
       |> set.from_list
       |> set.to_list,
   )
 }
 
 pub fn to_string(m: Mod) {
-  list.concat([
+  list.flatten([
     list.map(m.imports, fn(i) { "import " <> i }),
     list.map(m.types, t.generate_type_def),
     list.map(m.functions, gens.generate),

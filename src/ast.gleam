@@ -3,7 +3,7 @@ import gleam/list
 import gleam/string
 import request.{type Request}
 
-pub fn get_import_path_from_mod_name(module_str: String, req: Request) {
+pub fn get_import_path_from_mod_name(module_str: String, req: Request) -> String {
   list.find_map(in: req.module.imports, with: fn(imp) {
     let full_module_str = imp.definition.module
     case

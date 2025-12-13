@@ -7,10 +7,7 @@ version = "1.2.1"
 description = "gleam codegen for serialization and deserialization"
 licences = ["MIT"]
 repository = { type = "github", user = "cdaringe", repo = "gserde" }
-internal_modules = [
-  "internal",
-  "internal/*",
-]
+internal_modules = ["internal", "internal/*"]
 # links = [{ title = "Website", href = "https://gleam.run" }]
 #
 # For a full reference of all the available options, you can have a look at
@@ -18,14 +15,14 @@ internal_modules = [
 
 [dependencies]
 gleam_stdlib = "~> 0.34 or ~> 1.0"
-glance = "~> 0.8"
-simplifile = "~> 1.2"
-fswalk = "~> 2.0"
+glance = ">= 6.0.0"
+simplifile = ">= 2.3.1 and < 3.0.0"
+fswalk = ">= 3.1.0 and < 4.0.0"
 shellout = "~> 1.5"
-dot_env = "~> 0.2"
+dot_env = ">= 1.2.0 and < 2.0.0"
 justin = "~> 1.0"
+gleam_yielder = ">= 1.1.0 and < 2.0.0"
+gleam_json = ">= 3.1.0 and < 4.0.0"
 
 [dev-dependencies]
 gleeunit = "~> 1.0"
-gleam_json = ">= 0.0.0 and < 2.0.0"
-

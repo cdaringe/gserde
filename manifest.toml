@@ -2,27 +2,30 @@
 # You typically do not need to edit this file
 
 packages = [
-  { name = "dot_env", version = "0.2.4", build_tools = ["gleam"], requirements = ["gleam_stdlib", "simplifile"], otp_app = "dot_env", source = "hex", outer_checksum = "FFAC6F89A2BB6896A10128E5850496C372821BFDB807C837A1404BEBDD1AB2B9" },
-  { name = "fswalk", version = "2.0.2", build_tools = ["gleam"], requirements = ["simplifile", "dot_env", "gleam_community_path", "gleam_stdlib"], otp_app = "fswalk", source = "hex", outer_checksum = "5D8E9C34C4C1BF3E65A79A292FE98B4AD35E525D18BB068518359687FA7BD1EB" },
-  { name = "glance", version = "0.8.2", build_tools = ["gleam"], requirements = ["gleam_stdlib", "glexer"], otp_app = "glance", source = "hex", outer_checksum = "ACF09457E8B564AD7A0D823DAFDD326F58263C01ACB0D432A9BEFDEDD1DA8E73" },
+  { name = "dot_env", version = "1.2.0", build_tools = ["gleam"], requirements = ["gleam_stdlib", "simplifile"], otp_app = "dot_env", source = "hex", outer_checksum = "F2B4815F1B5AF8F20A6EADBB393E715C4C35203EBD5BE8200F766EA83A0B18DE" },
+  { name = "filepath", version = "1.1.2", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "filepath", source = "hex", outer_checksum = "B06A9AF0BF10E51401D64B98E4B627F1D2E48C154967DA7AF4D0914780A6D40A" },
+  { name = "fswalk", version = "3.1.0", build_tools = ["gleam"], requirements = ["gleam_community_path", "gleam_stdlib", "gleam_yielder", "simplifile"], otp_app = "fswalk", source = "hex", outer_checksum = "579530173EE64EDDF53CE02D21171E4CC0CB4F1D34DAA829D32B6009CD8E6FD5" },
+  { name = "glance", version = "6.0.0", build_tools = ["gleam"], requirements = ["gleam_stdlib", "glexer"], otp_app = "glance", source = "hex", outer_checksum = "49E0ED4793BB3F56C3E5ED00528D70CAE21D263F70A735604124B95C5F62E2DB" },
   { name = "gleam_community_path", version = "0.1.0", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "gleam_community_path", source = "hex", outer_checksum = "916C2829E2ED81036BBA180CFD5E8633D05E25C304FDF6E3BC8A048459B89725" },
-  { name = "gleam_json", version = "1.0.0", build_tools = ["gleam"], requirements = ["gleam_stdlib", "thoas"], otp_app = "gleam_json", source = "hex", outer_checksum = "8B197DD5D578EA6AC2C0D4BDC634C71A5BCA8E7DB5F47091C263ECB411A60DF3" },
-  { name = "gleam_stdlib", version = "0.36.0", build_tools = ["gleam"], requirements = [], otp_app = "gleam_stdlib", source = "hex", outer_checksum = "C0D14D807FEC6F8A08A7C9EF8DFDE6AE5C10E40E21325B2B29365965D82EB3D4" },
-  { name = "gleeunit", version = "1.0.2", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "gleeunit", source = "hex", outer_checksum = "D364C87AFEB26BDB4FB8A5ABDE67D635DC9FA52D6AB68416044C35B096C6882D" },
-  { name = "glexer", version = "0.7.0", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "glexer", source = "hex", outer_checksum = "4484942A465482A0A100936E1E5F12314DB4B5AC0D87575A7B9E9062090B96BE" },
+  { name = "gleam_json", version = "3.1.0", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "gleam_json", source = "hex", outer_checksum = "44FDAA8847BE8FC48CA7A1C089706BD54BADCC4C45B237A992EDDF9F2CDB2836" },
+  { name = "gleam_stdlib", version = "0.67.1", build_tools = ["gleam"], requirements = [], otp_app = "gleam_stdlib", source = "hex", outer_checksum = "6CE3E4189A8B8EC2F73AB61A2FBDE49F159D6C9C61C49E3B3082E439F260D3D0" },
+  { name = "gleam_yielder", version = "1.1.0", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "gleam_yielder", source = "hex", outer_checksum = "8E4E4ECFA7982859F430C57F549200C7749823C106759F4A19A78AEA6687717A" },
+  { name = "gleeunit", version = "1.9.0", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "gleeunit", source = "hex", outer_checksum = "DA9553CE58B67924B3C631F96FE3370C49EB6D6DC6B384EC4862CC4AAA718F3C" },
+  { name = "glexer", version = "2.3.0", build_tools = ["gleam"], requirements = ["gleam_stdlib", "splitter"], otp_app = "glexer", source = "hex", outer_checksum = "40A1FB0919FA080AD6C5809B4C7DBA545841CAAC8168FACDFA0B0667C22475CC" },
   { name = "justin", version = "1.0.1", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "justin", source = "hex", outer_checksum = "7FA0C6DB78640C6DC5FBFD59BF3456009F3F8B485BF6825E97E1EB44E9A1E2CD" },
-  { name = "shellout", version = "1.6.0", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "shellout", source = "hex", outer_checksum = "E2FCD18957F0E9F67E1F497FC9FF57393392F8A9BAEAEA4779541DE7A68DD7E0" },
-  { name = "simplifile", version = "1.5.0", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "simplifile", source = "hex", outer_checksum = "EB9AA8E65E5C1E3E0FDCFC81BC363FD433CB122D7D062750FFDF24DE4AC40116" },
-  { name = "thoas", version = "0.4.1", build_tools = ["rebar3"], requirements = [], otp_app = "thoas", source = "hex", outer_checksum = "4918D50026C073C4AB1388437132C77A6F6F7C8AC43C60C13758CC0ADCE2134E" },
+  { name = "shellout", version = "1.7.0", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "shellout", source = "hex", outer_checksum = "1BDC03438FEB97A6AF3E396F4ABEB32BECF20DF2452EC9A8C0ACEB7BDDF70B14" },
+  { name = "simplifile", version = "2.3.1", build_tools = ["gleam"], requirements = ["filepath", "gleam_stdlib"], otp_app = "simplifile", source = "hex", outer_checksum = "957E0E5B75927659F1D2A1B7B75D7B9BA96FAA8D0C53EA71C4AD9CD0C6B848F6" },
+  { name = "splitter", version = "1.2.0", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "splitter", source = "hex", outer_checksum = "3DFD6B6C49E61EDAF6F7B27A42054A17CFF6CA2135FF553D0CB61C234D281DD0" },
 ]
 
 [requirements]
-dot_env = { version = "~> 0.2" }
-fswalk = { version = "~> 2.0" }
-glance = { version = "~> 0.8" }
-gleam_json = { version = ">= 0.0.0 and < 2.0.0" }
+dot_env = { version = ">= 1.2.0 and < 2.0.0" }
+fswalk = { version = ">= 3.1.0 and < 4.0.0" }
+glance = { version = ">= 6.0.0" }
+gleam_json = { version = ">= 3.1.0 and < 4.0.0" }
 gleam_stdlib = { version = "~> 0.34 or ~> 1.0" }
+gleam_yielder = { version = ">= 1.1.0 and < 2.0.0" }
 gleeunit = { version = "~> 1.0" }
-justin = { version = "~> 1.0"}
+justin = { version = "~> 1.0" }
 shellout = { version = "~> 1.5" }
-simplifile = { version = "~> 1.2" }
+simplifile = { version = ">= 2.3.1 and < 3.0.0" }

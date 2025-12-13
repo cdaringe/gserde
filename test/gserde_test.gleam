@@ -46,7 +46,6 @@ pub type BarJson {
 "
 
 const foo_json_test = "
-import gleam/option.{Some}
 import gleam/io
 import gleam/result
 import internal/foo
@@ -59,15 +58,15 @@ pub fn main() {
     |> foo_json.to_string
 
   let foo_b = foo_str |> foo_json.from_string |> result.lazy_unwrap(fn() {
-    io.debug(\"parse error calling foo_json.from_string\")
+    echo \"parse error calling foo_json.from_string\"
     panic
   })
 
   case foo_a == foo_b {
     True -> io.println(\"foos equal\")
     False -> {
-      io.debug(#(\"a\", foo_a))
-      io.debug(#(\"b\", foo_b))
+      echo #(\"a\", foo_a)
+      echo #(\"b\", foo_b)
       panic as \"not equal\"
     }
   }
@@ -77,7 +76,6 @@ pub fn main() {
 "
 
 const bar_json_test = "
-import gleam/option
 import gleam/io
 import gleam/result
 import internal/foo
@@ -93,15 +91,15 @@ pub fn main() {
     |> bar_json.to_string
 
   let bar_b = bar_str |> bar_json.from_string |> result.lazy_unwrap(fn() {
-    io.debug(\"parse error calling bar_json.from_string\")
+    echo \"parse error calling bar_json.from_string\"
     panic
   })
 
   case bar_a == bar_b {
     True -> io.println(\"bars equal\")
     False -> {
-      io.debug(#(\"a\", bar_a))
-      io.debug(#(\"b\", bar_b))
+      echo #(\"a\", bar_a)
+      echo #(\"b\", bar_b)
       panic as \"not equal\"
     }
   }
