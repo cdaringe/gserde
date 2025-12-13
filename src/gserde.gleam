@@ -1,12 +1,11 @@
 import dot_env/env
-import evil.{expect}
 import fswalk
 import glance
 import gleam/bool
-import gleam/io
 import gleam/list
 import gleam/result
 import gleam/string
+import gleam/yielder
 import internal/deserializer
 import internal/serializer
 import request.{type Request, Request}
@@ -40,17 +39,20 @@ pub fn main() {
   }
   fswalk.builder()
   |> fswalk.with_path("src")
-  |> fswalk.with_entry_filter(fn(it) {
-    string.ends_with(it.filename, ".gleam") && fswalk.only_files(it)
-  })
   |> fswalk.walk
-  |> fswalk.map(fn(v) { expect(v, "failed to walk").filename })
-  |> fswalk.each(fn(f) { process_single(f, is_debug) })
+  |> yielder.map(fn(res) {
+    let assert Ok(entry) = res as "failed to walk"
+    entry
+  })
+  |> yielder.filter(fn(entry) {
+    string.ends_with(entry.filename, ".gleam") && !entry.stat.is_directory
+  })
+  |> yielder.each(fn(entry) { process_single(entry.filename, is_debug) })
 }
 
 pub fn process_single(src_filename: String, is_debug) {
   bool.guard(!is_debug, Nil, fn() {
-    io.debug(#("Processing", src_filename))
+    echo #("Processing", src_filename)
     Nil
   })
 
@@ -66,7 +68,7 @@ pub fn process_single(src_filename: String, is_debug) {
   let assert Ok(parsed) =
     glance.module(code)
     |> result.map_error(fn(err) {
-      io.debug(err)
+      echo err
       panic
     })
 
@@ -94,7 +96,7 @@ pub fn process_single(src_filename: String, is_debug) {
         )
       })
     })
-
+  echo custom_types
   let filecontent =
     list.map(requests, gen)
     |> list.map(fn(it) { it.1 })
@@ -106,8 +108,9 @@ pub fn process_single(src_filename: String, is_debug) {
       simplifile.write(
         to: dest_filename,
         contents: [
+          "// This file was generated using gserde",
           "import gleam/json",
-          "import gleam/dynamic",
+          "import gleam/dynamic/decode",
           "import " <> src_module_name,
           filecontent,
         ]

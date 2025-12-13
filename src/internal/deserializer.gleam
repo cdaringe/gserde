@@ -1,8 +1,6 @@
 import common.{decoder_name_of_t}
-import evil.{expect}
 import glance
 import gleam/int
-import gleam/io
 import gleam/list
 import gleam/option
 import gleam/string
@@ -15,22 +13,22 @@ fn quote(str) {
   "\"" <> str <> "\""
 }
 
-fn gen_decoder(typ, req: Request) {
+fn gen_decoder(typ) {
   case typ {
-    glance.NamedType(name, module_name, parameters) -> {
+    glance.NamedType(_location, name, module, parameters) -> {
       case name {
         "List" -> {
-          let assert Ok(t0) = list.at(parameters, 0)
-          gens.call("dynamic.list", [gen_decoder(t0, req)])
+          let assert Ok(t0) = list.first(parameters)
+          gens.call("decode.list", [gen_decoder(t0)])
         }
         "Option" -> {
-          let assert Ok(t0) = list.at(parameters, 0)
-          gens.call("dynamic.optional", [gen_decoder(t0, req)])
+          let assert Ok(t0) = list.first(parameters)
+          gens.call("decode.optional", [gen_decoder(t0)])
         }
         _ -> {
-          case module_name {
+          case module {
             option.None -> {
-              gens.VarPrimitive("dynamic." <> string.lowercase(name))
+              gens.VarPrimitive("decode." <> string.lowercase(name))
             }
             option.Some(module_str) -> {
               gens.VarPrimitive(
@@ -41,19 +39,33 @@ fn gen_decoder(typ, req: Request) {
         }
       }
     }
-    glance.TupleType(parts) -> {
-      let m_tuple =
-        list.length(of: parts)
-        |> int.to_string
-      gens.call(
-        "dynamic.tuple" <> string.lowercase(m_tuple),
-        parts
-          |> list.map(fn(part) { gen_decoder(part, req) }),
+    glance.TupleType(_location, elements) -> {
+      gens.Block(
+        list.flatten([
+          elements
+            |> list.index_map(fn(element, i) {
+              gens.UseExpr(
+                "el" <> int.to_string(i),
+                gens.call("decode.field", [gens.IntVal(i), gen_decoder(element)]),
+              )
+            }),
+
+          [
+            gens.call("decode.success", [
+              gens.TupleVal(
+                elements
+                |> list.index_map(fn(_element, i) {
+                  gens.VarPrimitive("el" <> int.to_string(i))
+                }),
+              ),
+            ]),
+          ],
+        ]),
       )
     }
     x -> {
-      io.debug(#("warning: unsupported decoding", x))
-      gens.VarPrimitive("dynamic.toodoo")
+      echo #("warning: unsupported decoding", x)
+      gens.Direct("todo")
     }
   }
 }
@@ -65,33 +77,51 @@ fn gen_root_decoder(req) {
     variant: variant,
     ..,
   ) = req
-  let n_str =
-    list.length(of: variant.fields)
-    |> int.to_string
 
   let decoder_fn_name = decoder_name_of_t(type_name)
 
   [
-    gens.Function(decoder_fn_name, [], [
-      gens.call("dynamic.decode" <> n_str, [
-        gens.VarPrimitive(basename(src_module_name) <> "." <> variant.name),
-        ..list.map(req.variant.fields, fn(field) {
-          gens.call("dynamic.field", [
-            gens.VarPrimitive(
-              option.to_result(field.label, Nil)
-              |> expect("@todo/panic variants must be labeled")
-              |> quote,
+    gens.Function(
+      decoder_fn_name,
+      [],
+      list.flatten([
+        list.map(req.variant.fields, fn(field) {
+          case field {
+            glance.LabelledVariantField(_, label) -> {
+              gens.UseExpr(
+                label,
+                gens.call("decode.field", [
+                  gens.VarPrimitive(quote(label)),
+                  gen_decoder(field.item),
+                ]),
+              )
+            }
+            glance.UnlabelledVariantField(_) ->
+              panic as "variants must be labelled"
+          }
+        }),
+        [
+          gens.call("decode.success", [
+            gens.call(
+              basename(src_module_name) <> "." <> variant.name,
+              list.map(req.variant.fields, fn(field) {
+                case field {
+                  glance.LabelledVariantField(_, label) ->
+                    gens.VarPrimitive(label)
+                  glance.UnlabelledVariantField(_) ->
+                    panic as "variants must be labelled"
+                }
+              }),
             ),
-            gen_decoder(field.item, req),
-          ])
-        })
+          ]),
+        ],
       ]),
-    ]),
+    ),
     gens.Function(
       "from_string",
       [gens.arg_typed("json_str", t.AnonymousType("String"))],
       [
-        gens.call("json.decode", [
+        gens.call("json.parse", [
           gens.VarPrimitive("json_str"),
           gens.call(decoder_fn_name, []),
         ]),

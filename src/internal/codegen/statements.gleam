@@ -13,6 +13,7 @@ pub type GleamStatement {
   TupleVal(items: List(GleamStatement))
   VariantVal(name: String, fields: List(GleamStatement))
   VarPrimitive(name: String)
+  Block(items: List(GleamStatement))
   Comparison(GleamStatement, ComparisonOperator, GleamStatement)
   CaseStatement(guards: List(GleamStatement), clauses: List(Clause))
   Function(
@@ -28,6 +29,8 @@ pub type GleamStatement {
   LetTuple(patterns: List(Pattern), tuple: GleamStatement)
 
   Multiply(terms: List(GleamStatement))
+
+  UseExpr(name: String, statement: GleamStatement)
 
   Direct(string: String)
 }
@@ -208,6 +211,12 @@ pub fn generate(stmt: GleamStatement) -> String {
       |> map(generate)
       |> join(", ")
       <> ")"
+    Block(statements) ->
+      "{\n"
+      <> statements
+      |> map(generate)
+      |> join("\n")
+      <> "}"
     VarPrimitive(name) -> name
     Comparison(stmt1, op, stmt2) ->
       generate(stmt1)
@@ -273,6 +282,7 @@ pub fn generate(stmt: GleamStatement) -> String {
       |> map(generate)
       |> join(" * ")
 
+    UseExpr(name, stmt) -> "use " <> name <> " <- " <> generate(stmt)
     Direct(string) -> string
   }
 }
