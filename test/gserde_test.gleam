@@ -11,7 +11,6 @@ pub fn main() {
 
 const foo_module = "
 import gleam/option.{type Option, Some}
-import gleam/io
 
 pub type FooJson {
   Foo(
